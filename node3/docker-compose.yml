@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  nodejs-service-3:
+    build:
+      context: .
+    ports:
+      - 3002:3002
+    networks:
+      - kong-network
+
+networks:
+  kong-network:
+    external: true

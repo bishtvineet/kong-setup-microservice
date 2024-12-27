@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  nodejs-service-1:
+    build:
+      context: .
+    image: nodejs-service-1
+    ports:
+      - 3000:3000
+    networks:
+      - kong_kong-network
+
+networks:
+  kong_kong-network:
+    external: true
