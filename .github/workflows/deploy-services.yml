@@ -6,26 +6,27 @@ on:
       - 'node-service-1/**'
       - 'node-service-2/**'
       - 'node-service-3/**'
+    branches:
+      - main  # Ensure the branch is correct (e.g., 'main' or 'master')
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Set up SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H your-local-machine-ip >> ~/.ssh/known_hosts
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H your-local-machine-ip >> ~/.ssh/known_hosts
 
-    - name: Deploy Service
-      run: |
-        ssh user@your-local-machine-ip "
-          cd /path/to/project &&
-          git pull origin main &&
-          docker-compose up -d --build
-        "
+      - name: Deploy Service
+        run: |
+          ssh root@172.19.73.133 "
+            cd /path/to/project &&
+            git pull origin main &&
+            docker-compose up -d --build
+          "
