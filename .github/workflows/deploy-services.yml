@@ -1,0 +1,39 @@
+name: Deploy Changed Service
+
+on:
+  push:
+    paths:
+      - 'node-service-1/**'
+      - 'node-service-2/**'
+      - 'node-service-3/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Detect Changed Service
+      id: detect-changes
+      run: |
+        if [[ -n "$(git diff --name-only HEAD^ HEAD | grep '^node-service-1/')" ]]; then
+          echo "service=node-service-1" >> $GITHUB_ENV
+        elif [[ -n "$(git diff --name-only HEAD^ HEAD | grep '^node-service-2/')" ]]; then
+          echo "service=node-service-2" >> $GITHUB_ENV
+        elif [[ -n "$(git diff --name-only HEAD^ HEAD | grep '^node-service-3/')" ]]; then
+          echo "service=node-service-3" >> $GITHUB_ENV
+        else
+          echo "No changes detected in services."
+          exit 0
+
+    - name: Deploy Service
+      if: env.service != ''
+      run: |
+        echo "Deploying $service..."
+        ssh user@local-machine "
+          cd /path/to/services/$service &&
+          git pull origin main &&
+          docker-compose up -d --build
+        "
