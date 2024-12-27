@@ -7,7 +7,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/info', (req, res) => {
-  res.json({ service: 'Node.js  1 Service Changes Deployed', status: 'Running' });
+  res.json({ service: 'Node.js  1 Service Changes Deployed ', status: 'Running' });
 });
 
 app.listen(PORT, () => {
