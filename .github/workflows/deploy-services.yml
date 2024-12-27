@@ -22,7 +22,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 172.19.73.133 >> ~/.ssh/known_hosts
-
+          
       - name: Deploy Service
         run: |
           ssh -o StrictHostKeyChecking=no root@172.19.73.133 "
