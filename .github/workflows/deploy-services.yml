@@ -3,9 +3,9 @@ name: Deploy Changed Service
 on:
   push:
     paths:
-      - 'node-service-1/**'
-      - 'node-service-2/**'
-      - 'node-service-3/**'
+      - 'node1/**'
+      - 'node2/**'
+      - 'node3/**'
     branches:
       - main  # Ensure the branch is correct (e.g., 'main' or 'master')
 
