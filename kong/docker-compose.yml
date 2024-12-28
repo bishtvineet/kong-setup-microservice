@@ -38,7 +38,7 @@ services:
       - kong-network
 
   konga:
-    image: pantsel/konga
+    image: pantsel/konga 
     container_name: konga
     environment:
       NODE_ENV: production
