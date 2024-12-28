@@ -1,0 +1,53 @@
+name: Kong Deploy
+
+on:
+  push:
+    paths:
+      - 'kong/**'
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{github.ref}}
+  cancel-in-progress: true
+
+env:
+  image_name: kong
+  container_name: kong
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{github.ref}}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        env: 
+         PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+          cat ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "Private key Entered"
+
+          ssh-keyscan -H 172.19.73.133 >> ~/.ssh/known_hosts
+
+          echo "Known hosts content:"
+          cat ~/.ssh/known_hosts
+
+          echo "Listing .ssh directory contents and permissions:"
+          ls -l ~/.ssh
+
+      - name: Deploy Service
+        run: |
+          # Debugging SSH: Add verbose mode to see detailed logs
+          echo "Attempting SSH connection"
+          ssh -v -i ~/.ssh/id_rsa root@172.19.73.133 << 'EOF'
+            echo "Successfully connected to the server"
+            cd /path/to/project && git pull origin main && docker-compose up -d --build
+          EOF
