@@ -7,10 +7,6 @@ on:
     branches:
       - main
 
-concurrency:
-  group: ${{ github.workflow }}-${{github.ref}}
-  cancel-in-progress: true
-
 env:
   image_name: kong
   container_name: kong
@@ -18,9 +14,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{github.ref}}
-      cancel-in-progress: true
     steps:
       - name: Checkout
         uses: actions/checkout@v3
