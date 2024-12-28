@@ -37,6 +37,8 @@ jobs:
           cd Project || exit
           git pull origin main
           git log --oneline -10
+          cd kong-setup-microservice
+          cd kong
           docker compose up -d --build
           EOF
 
