@@ -32,7 +32,7 @@ jobs:
           chmod 600 ~/.ssh/private_key.pem
           echo "Private key entered"
 
-          ssh -tt -o StrictHostKeyChecking=no -i private_key.pem root@172.19.73.133 <<EOF
+          ssh -tt -o StrictHostKeyChecking=no -i ~/.ssh/private_key.pem root@172.19.73.133 <<EOF
           mkdir -p Project
           cd Project || exit
           git pull origin main
