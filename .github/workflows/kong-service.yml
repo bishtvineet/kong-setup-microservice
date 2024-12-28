@@ -18,29 +18,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup SSH
+      - name: SSH And Deploy
         env: 
          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
-          cat ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
           echo "Private key Entered"
-
-          ssh-keyscan -H 172.19.73.133 >> ~/.ssh/known_hosts
-
-          echo "Known hosts content:"
-          cat ~/.ssh/known_hosts
-
-          echo "Listing .ssh directory contents and permissions:"
-          ls -l ~/.ssh
-
-      - name: Deploy Service
-        run: |
-          # Debugging SSH: Add verbose mode to see detailed logs
-          echo "Attempting SSH connection"
-          ssh -v -i ~/.ssh/id_rsa root@172.19.73.133 << 'EOF'
-            echo "Successfully connected to the server"
-            cd /path/to/project && git pull origin main && docker-compose up -d --build
+          ssh -o StrictHostKeyChecking=no -i private_key.pem root@172.19.73.133<<EOF
+          
+          mkdir Project
+          cd Project
+          git checkout main
+          git pull
+          git log --oneline -10
+          docker compose up -d --build
           EOF
+
+          rm -f private_key.pem
+
+      permissions:
+        contents: read
+        actions: write
+        id-token: write
