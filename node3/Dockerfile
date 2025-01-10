@@ -1,18 +1,13 @@
-# Base image
-FROM node:16
-
-# Set working directory
+# Build stage
+FROM node:16-alpine AS builder
 WORKDIR /app
-
-# Copy files
 COPY package*.json ./
 COPY app.js ./
-
-# Install dependencies
 RUN npm install
+COPY . .
 
-# Expose the service port
-EXPOSE 3002
-
-# Start the service
+# Runtime stage
+FROM node:16-alpine
+WORKDIR /app
+COPY --from=builder /app .
 CMD ["npm", "start"]
