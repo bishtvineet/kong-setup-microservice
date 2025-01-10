@@ -45,9 +45,9 @@ jobs:
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.IP_ADDRESS }}
-          username: ${{ secrets.USERNAME }}
+          username: ${{ secrets.USERNAME }} 
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            echo "SSH INITIATE"
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{env.IMAGE}}:${{github.run_number}}
+            whoami
+            ls -al
