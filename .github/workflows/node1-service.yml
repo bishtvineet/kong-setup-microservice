@@ -44,10 +44,10 @@ jobs:
       - name: SSH to instance and run container - CD
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.IP_ADDRESS }}
-          username: ${{ secrets.USERNAME }} 
+          host: 172.19.73.133
+          username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.PORT }}
+          port: 22
           debug: true
           script: |
             whoami
