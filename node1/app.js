@@ -14,6 +14,6 @@ app.get('/info', (req, res) => {
   res.json({ service: 'Node.js  1 Service Changes Deployed', status: 'Running' });
 });
 
-app.listennnnnnnnnnn(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Service running on port ${PORT}`);
 });
