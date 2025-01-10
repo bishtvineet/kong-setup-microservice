@@ -1,8 +1,8 @@
 # Build stage
 FROM node:16-alpine AS builder
 WORKDIR /app
-COPY package*.json ./
-COPY app.js ./
+COPY node1/package*.json ./
+COPY node1/app.js ./
 RUN npm install
 COPY . .
 
