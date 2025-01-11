@@ -64,7 +64,6 @@ jobs:
           echo "$PRIVATE_KEY" > ~/.ssh/private_key.pem
           chmod 600 ~/.ssh/private_key.pem
           echo "Private key entered"
-          ssh -v -i ~/.ssh/private_key.pem root@172.19.73.133
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/private_key.pem root@172.19.73.133 <<EOF
           whoami
           ls -al
