@@ -44,14 +44,28 @@ jobs:
       # - name: Test connectivity
       #   run: ping 172.19.64.1
 
-      - name: SSH to instance and run container - CD
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: 172.19.73.133
-          username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          debug: true
-          script: |
-            whoami
-            ls -al
+      # - name: SSH to instance and run container - CD
+      #   uses: appleboy/ssh-action@v0.1.10
+      #   with:
+      #     host: 172.19.73.133
+      #     username: root
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     port: 22
+      #     debug: true
+      #     script: |
+      #       whoami
+      #       ls -al
+
+      - name: SSH And Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PRIVATE_KEY" > ~/.ssh/private_key.pem
+          chmod 600 ~/.ssh/private_key.pem
+          echo "Private key entered"
+          ssh -v -i ~/.ssh/private_key.pem root@172.19.73.133
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/private_key.pem root@172.19.73.133 <<EOF
+          whoami
+          ls -al
+          EOF
