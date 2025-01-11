@@ -40,6 +40,8 @@ jobs:
           file: ./node1/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{env.IMAGE}}:${{github.run_number}}
+      - name: Test connectivity
+        run: ping -c 4 172.19.73.133
 
       - name: SSH to instance and run container - CD
         uses: appleboy/ssh-action@v0.1.10
