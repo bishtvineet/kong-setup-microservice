@@ -55,16 +55,17 @@ jobs:
       #     script: |
       #       whoami
       #       ls -al
+      - name: Install SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
 
-      - name: SSH And Deploy
-        env:
-          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$PRIVATE_KEY" > ~/.ssh/private_key.pem
-          chmod 600 ~/.ssh/private_key.pem
-          echo "Private key entered"
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/private_key.pem root@172.19.73.133 <<EOF
-          whoami
-          ls -al
-          EOF
+      - name: SSH to Windows machine and deploy
+      uses: appleboy/ssh-action@v0.1.1
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          mkdir Project
