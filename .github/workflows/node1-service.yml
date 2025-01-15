@@ -56,16 +56,16 @@ jobs:
       #       whoami
       #       ls -al
       - name: Install SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: SSH to Windows machine and deploy
-      uses: appleboy/ssh-action@v0.1.1
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          mkdir Project
+        uses: appleboy/ssh-action@v0.1.1
+        with:
+          host: 192.168.29.59
+          username: vinee
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            mkdir Project
