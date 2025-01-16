@@ -44,28 +44,28 @@ jobs:
       # - name: Test connectivity
       #   run: ping 172.19.64.1
 
-      # - name: SSH to instance and run container - CD
-      #   uses: appleboy/ssh-action@v0.1.10
-      #   with:
-      #     host: 172.19.73.133
-      #     username: root
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     port: 22
-      #     debug: true
-      #     script: |
-      #       whoami
-      #       ls -al
-      - name: Install SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: SSH to Windows machine and deploy
-        uses: appleboy/ssh-action@v0.1.1
+      - name: SSH to instance and run container - CD
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.IP_ADDRESS }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          debug: true
           script: |
-            mkdir Project
+            whoami
+            ls -al
+      # - name: Install SSH key
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      #     chmod 600 ~/.ssh/id_rsa
+
+      # - name: SSH to Windows machine and deploy
+      #   uses: appleboy/ssh-action@v0.1.1
+      #   with:
+      #     host: ${{ secrets.IP_ADDRESS }}
+      #     username: root
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       mkdir Project
