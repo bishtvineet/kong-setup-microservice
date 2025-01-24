@@ -6,7 +6,7 @@ app.get('/', (req, res) => {
   const delay = 5000; // Delay in milliseconds (e.g., 2000 ms = 2 seconds)
   setTimeout(() => {
     console.log("service 2")
-    res.send('Hello from Node.js  2 Service!');
+    res.send('Hello from Node.js 3 Service!');
   }, delay);
 });
 
@@ -15,5 +15,5 @@ app.get('/info', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Service running on port ${PORT}`);  
+  console.log(`Service running on port ${PORT}`);
 });

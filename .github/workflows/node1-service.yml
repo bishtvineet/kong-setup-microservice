@@ -50,4 +50,5 @@ jobs:
           port: ${{ secrets.PORT }}
           debug: true
           script: |
+            cd ~/Script_Docker_Service
             bash test_build_test ${{env.IMAGE}} ${{ secrets.DOCKERHUB_USERNAME }} ${{github.run_number}} 3000
