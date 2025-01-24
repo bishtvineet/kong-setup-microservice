@@ -27,22 +27,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # - name: Login to Docker Hub
-      #   uses: docker/login-action@v2
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # - name: docker image build and push - CI
-      #   uses : docker/build-push-action@v4
-      #   with:
-      #     context: .
-      #     file: ./node1/Dockerfile
-      #     push: true
-      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{env.IMAGE}}:${{github.run_number}}
-
-      # - name: Test connectivity
-      #   run: ping 172.19.64.1
+      - name: docker image build and push - CI
+        uses : docker/build-push-action@v4
+        with:
+          context: .
+          file: ./node1/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{env.IMAGE}}:${{github.run_number}}
 
       - name: SSH to instance and run container - CD
         uses: appleboy/ssh-action@v0.1.10
@@ -53,19 +50,4 @@ jobs:
           port: ${{ secrets.PORT }}
           debug: true
           script: |
-            whoami
-            ls -al
-      # - name: Install SSH key
-      #   run: |
-      #     mkdir -p ~/.ssh
-      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-      #     chmod 600 ~/.ssh/id_rsa
-
-      # - name: SSH to Windows machine and deploy
-      #   uses: appleboy/ssh-action@v0.1.1
-      #   with:
-      #     host: ${{ secrets.IP_ADDRESS }}
-      #     username: root
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     script: |
-      #       mkdir Project
+            bash test_build_test ${{env.IMAGE}} ${{ secrets.DOCKERHUB_USERNAME }} ${{github.run_number}} 3000
